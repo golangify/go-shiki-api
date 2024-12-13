@@ -529,3 +529,19 @@ func (c *Client) DeleteMessage(messageID uint64) error {
 
 	return nil
 }
+
+func (c *Client) GetAnime(id uint) (*types.Anime, error) {
+	resp, err := c.MakeRequest(http.MethodGet, "api/animes/"+strconv.FormatUint(uint64(id), 10), nil, nil)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	var anime types.Anime
+	err = json.NewDecoder(resp.Body).Decode(&anime)
+	if err != nil {
+		return nil, err
+	}
+
+	return &anime, nil
+}
