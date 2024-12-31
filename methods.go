@@ -16,7 +16,7 @@ import (
 )
 
 func (c *Client) GetMe() (*types.Me, error) {
-	resp, err := c.MakeRequest(http.MethodGet, "api/users/whoami", nil, nil)
+	resp, err := c.MakeRequest(http.MethodGet, "api/users/whoami", nil, nil, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -47,7 +47,7 @@ func (c *Client) ClubInvite(userID, clubID uint) error {
 		return err
 	}
 
-	resp, err := c.MakeRequest(http.MethodPost, "clubs/"+strconv.FormatUint(uint64(clubID), 10)+"/club_invites", nil, bytes.NewReader(payload))
+	resp, err := c.MakeRequest(http.MethodPost, "clubs/"+strconv.FormatUint(uint64(clubID), 10)+"/club_invites", nil, nil, bytes.NewReader(payload))
 	if err != nil {
 		return err
 	}
@@ -57,7 +57,7 @@ func (c *Client) ClubInvite(userID, clubID uint) error {
 }
 
 func (c *Client) FriendRequest(userID uint) error {
-	resp, err := c.MakeRequest(http.MethodPost, "api/friends/"+strconv.FormatUint(uint64(userID), 10), nil, nil)
+	resp, err := c.MakeRequest(http.MethodPost, "api/friends/"+strconv.FormatUint(uint64(userID), 10), nil, nil, nil)
 	if err != nil {
 		return err
 	}
@@ -67,7 +67,7 @@ func (c *Client) FriendRequest(userID uint) error {
 }
 
 func (c *Client) FriendDeleteRequest(userID uint) error {
-	resp, err := c.MakeRequest(http.MethodDelete, "api/friends/"+strconv.FormatUint(uint64(userID), 10), nil, nil)
+	resp, err := c.MakeRequest(http.MethodDelete, "api/friends/"+strconv.FormatUint(uint64(userID), 10), nil, nil, nil)
 	if err != nil {
 		return err
 	}
@@ -77,7 +77,7 @@ func (c *Client) FriendDeleteRequest(userID uint) error {
 }
 
 func (c *Client) GetUserProfile(userID uint) (*types.UserProfile, error) {
-	resp, err := c.MakeRequest(http.MethodGet, "api/users/"+strconv.FormatUint(uint64(userID), 10), nil, nil)
+	resp, err := c.MakeRequest(http.MethodGet, "api/users/"+strconv.FormatUint(uint64(userID), 10), nil, nil, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -96,7 +96,7 @@ func (c *Client) GetUserProfileByNickname(nickname string) (*types.UserProfile, 
 	params := make(url.Values)
 	params.Set("is_nickname", "1")
 
-	resp, err := c.MakeRequest(http.MethodGet, "api/users/"+url.QueryEscape(nickname), params, nil)
+	resp, err := c.MakeRequest(http.MethodGet, "api/users/"+url.QueryEscape(nickname), nil, params, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -116,7 +116,7 @@ func (c *Client) GetUsers(page, limit uint) ([]types.User, error) {
 	params.Set("page", strconv.FormatUint(uint64(page), 10))
 	params.Set("limit", strconv.FormatUint(uint64(limit), 10))
 
-	resp, err := c.MakeRequest(http.MethodGet, "api/users", params, nil)
+	resp, err := c.MakeRequest(http.MethodGet, "api/users", nil, params, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -137,7 +137,7 @@ func (c *Client) GetFriends(userID, page, limit uint) ([]types.User, error) {
 	params.Set("page", strconv.FormatUint(uint64(page), 10))
 	params.Set("limit", strconv.FormatUint(uint64(limit), 10))
 
-	resp, err := c.MakeRequest(http.MethodGet, "api/users/"+strconv.FormatUint(uint64(userID), 10)+"/friends", params, nil)
+	resp, err := c.MakeRequest(http.MethodGet, "api/users/"+strconv.FormatUint(uint64(userID), 10)+"/friends", nil, params, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -154,7 +154,7 @@ func (c *Client) GetFriends(userID, page, limit uint) ([]types.User, error) {
 }
 
 func (c *Client) IgnoreUserRequest(userID uint) error {
-	resp, err := c.MakeRequest(http.MethodPost, "api/ignores/"+strconv.FormatUint(uint64(userID), 10), nil, nil)
+	resp, err := c.MakeRequest(http.MethodPost, "api/ignores/"+strconv.FormatUint(uint64(userID), 10), nil, nil, nil)
 	if err != nil {
 		return err
 	}
@@ -164,7 +164,7 @@ func (c *Client) IgnoreUserRequest(userID uint) error {
 }
 
 func (c *Client) UnignoreUserRequest(userID uint) error {
-	resp, err := c.MakeRequest(http.MethodDelete, "api/ignores/"+strconv.FormatUint(uint64(userID), 10), nil, nil)
+	resp, err := c.MakeRequest(http.MethodDelete, "api/ignores/"+strconv.FormatUint(uint64(userID), 10), nil, nil, nil)
 	if err != nil {
 		return err
 	}
@@ -174,7 +174,7 @@ func (c *Client) UnignoreUserRequest(userID uint) error {
 }
 
 func (c *Client) GetTopic(topicID uint) (*types.Topic, error) {
-	resp, err := c.MakeRequest(http.MethodGet, "api/topics/"+strconv.FormatUint(uint64(topicID), 10), nil, nil)
+	resp, err := c.MakeRequest(http.MethodGet, "api/topics/"+strconv.FormatUint(uint64(topicID), 10), nil, nil, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -200,7 +200,7 @@ func (c *Client) GetComments(commentableID uint, commentableType string, page, l
 		params.Set("desc", "0")
 	}
 
-	resp, err := c.MakeRequest(http.MethodGet, "api/comments", params, nil)
+	resp, err := c.MakeRequest(http.MethodGet, "api/comments", nil, params, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -217,7 +217,7 @@ func (c *Client) GetComments(commentableID uint, commentableType string, page, l
 }
 
 func (c *Client) GetComment(commentID uint) (*types.Comment, error) {
-	resp, err := c.MakeRequest(http.MethodGet, "api/comments/"+strconv.FormatUint(uint64(commentID), 10), nil, nil)
+	resp, err := c.MakeRequest(http.MethodGet, "api/comments/"+strconv.FormatUint(uint64(commentID), 10), nil, nil, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -251,7 +251,7 @@ func (c *Client) SendComment(commentableID uint, commentableType string, text st
 		return nil, err
 	}
 
-	resp, err := c.MakeRequest(http.MethodPost, "api/comments", nil, bytes.NewBuffer(payload))
+	resp, err := c.MakeRequest(http.MethodPost, "api/comments", nil, nil, bytes.NewBuffer(payload))
 	if err != nil {
 		return nil, err
 	}
@@ -279,7 +279,7 @@ func (c *Client) EditComment(commentID uint, text string) error {
 		return err
 	}
 
-	resp, err := c.MakeRequest(http.MethodPatch, "api/comments/"+strconv.FormatUint(uint64(commentID), 10), nil, bytes.NewBuffer(payload))
+	resp, err := c.MakeRequest(http.MethodPatch, "api/comments/"+strconv.FormatUint(uint64(commentID), 10), nil, nil, bytes.NewBuffer(payload))
 	if err != nil {
 		return err
 	}
@@ -289,7 +289,7 @@ func (c *Client) EditComment(commentID uint, text string) error {
 }
 
 func (c *Client) DeleteComment(commentID uint) error {
-	resp, err := c.MakeRequest(http.MethodDelete, "api/comments/"+strconv.FormatUint(uint64(commentID), 10), nil, nil)
+	resp, err := c.MakeRequest(http.MethodDelete, "api/comments/"+strconv.FormatUint(uint64(commentID), 10), nil, nil, nil)
 	if err != nil {
 		return err
 	}
@@ -316,7 +316,7 @@ func (c *Client) PreviewComment(text string) ([]byte, error) {
 		return nil, err
 	}
 
-	resp, err := c.MakeRequest(http.MethodPost, "comments/preview", nil, bytes.NewBuffer(payload))
+	resp, err := c.MakeRequest(http.MethodPost, "comments/preview", nil, nil, bytes.NewBuffer(payload))
 	if err != nil {
 		return nil, err
 	}
@@ -403,7 +403,7 @@ func (c *Client) UploadImage(imageName string, image io.Reader) (*types.Uploaded
 }
 
 func (c *Client) GetCharacter(id uint) (*types.Character, error) {
-	resp, err := c.MakeRequest(http.MethodGet, "api/characters/"+strconv.FormatUint(uint64(id), 10), nil, nil)
+	resp, err := c.MakeRequest(http.MethodGet, "api/characters/"+strconv.FormatUint(uint64(id), 10), nil, nil, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -423,7 +423,7 @@ func (c *Client) GetDialogs(page, limit uint) ([]types.Dialog, error) {
 	params.Set("page", strconv.FormatUint(uint64(page), 10))
 	params.Set("limit", strconv.FormatUint(uint64(limit), 10))
 
-	resp, err := c.MakeRequest(http.MethodGet, "api/dialogs", params, nil)
+	resp, err := c.MakeRequest(http.MethodGet, "api/dialogs", nil, params, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -444,7 +444,7 @@ func (c *Client) GetMessages(userID uint, page, limit uint) ([]types.Message, er
 	params.Set("page", strconv.FormatUint(uint64(page), 10))
 	params.Set("limit", strconv.FormatUint(uint64(limit), 10))
 
-	resp, err := c.MakeRequest(http.MethodGet, "api/dialogs/"+strconv.FormatUint(uint64(userID), 10), params, nil)
+	resp, err := c.MakeRequest(http.MethodGet, "api/dialogs/"+strconv.FormatUint(uint64(userID), 10), nil, params, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -478,7 +478,7 @@ func (c *Client) SendMessage(userID uint, text string) (*types.Message, error) {
 		return nil, err
 	}
 
-	resp, err := c.MakeRequest(http.MethodPost, "api/messages", nil, bytes.NewBuffer(payload))
+	resp, err := c.MakeRequest(http.MethodPost, "api/messages", nil, nil, bytes.NewBuffer(payload))
 	if err != nil {
 		return nil, err
 	}
@@ -505,7 +505,7 @@ func (c *Client) EditMessage(messageID uint64, newText string) (*types.Message, 
 		return nil, err
 	}
 
-	resp, err := c.MakeRequest(http.MethodPatch, "api/messages/"+strconv.FormatUint(messageID, 10), nil, bytes.NewReader(payload))
+	resp, err := c.MakeRequest(http.MethodPatch, "api/messages/"+strconv.FormatUint(messageID, 10), nil, nil, bytes.NewReader(payload))
 	if err != nil {
 		return nil, err
 	}
@@ -521,7 +521,7 @@ func (c *Client) EditMessage(messageID uint64, newText string) (*types.Message, 
 }
 
 func (c *Client) DeleteMessage(messageID uint64) error {
-	resp, err := c.MakeRequest(http.MethodDelete, "api/messages/"+strconv.FormatUint(messageID, 10), nil, nil)
+	resp, err := c.MakeRequest(http.MethodDelete, "api/messages/"+strconv.FormatUint(messageID, 10), nil, nil, nil)
 	if err != nil {
 		return nil
 	}
@@ -531,7 +531,7 @@ func (c *Client) DeleteMessage(messageID uint64) error {
 }
 
 func (c *Client) GetAnime(id uint) (*types.Anime, error) {
-	resp, err := c.MakeRequest(http.MethodGet, "api/animes/"+strconv.FormatUint(uint64(id), 10), nil, nil)
+	resp, err := c.MakeRequest(http.MethodGet, "api/animes/"+strconv.FormatUint(uint64(id), 10), nil, nil, nil)
 	if err != nil {
 		return nil, err
 	}

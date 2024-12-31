@@ -42,7 +42,7 @@ func NewClient(cookies string, xCsrfToken string) (*Client, error) {
 	return shikiClient, nil
 }
 
-func (c *Client) MakeRequest(method string, path string, urlParams url.Values, data io.Reader) (*http.Response, error) {
+func (c *Client) MakeRequest(method string, path string, headers map[string]string, urlParams url.Values, data io.Reader) (*http.Response, error) {
 	var (
 		req *http.Request
 		err error
@@ -60,6 +60,10 @@ func (c *Client) MakeRequest(method string, path string, urlParams url.Values, d
 	req.Header.Set("X-CSRF-Token", c.XCsrfToken)
 	req.Header.Set("Content-Type", "application/json")
 	req.Header.Set("Accept", "application/json")
+
+	for k, v := range headers {
+		req.Header.Set(k, v)
+	}
 
 	resp, err := c.client.Do(req)
 	if err != nil {
